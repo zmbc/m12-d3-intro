@@ -26,23 +26,49 @@ var exam3 = [
 // You'll have to wait for you page to load to assign events to the elements created in your index.html file
 $(function() {
   // Select SVG
-
+  var svg = d3.select('#my-svg').attr('height', 200);
   // Reusable draw function
-
+  function draw(data) {
     // Bind data to selection of rects in your svg
-
+    var rects = svg.selectAll('rect').data(data, function(x) {return x.id;});
 
     // Enter rect elements
-
+    rects.enter()
+      .append('rect')
+      .attr('x', 20)
+      .attr('width', 0)
+      .attr('y', function(x) {return 40 * x.id})
+      .attr('height', 30)
+      .attr('fill', 'black')
+      .merge(rects)
+      .transition(500)
+      .attr('width', function(x) {return x.grade});
+      
+    rects.exit()
+      .transition(500)
+      .attr('width', 0)
+      .remove();
+    
+    var text = svg.selectAll('text').data(data, function(x) {return x.id;});
+    
+    text.enter()
+      .append('text')
+      .style('fill', 'white')
+      .attr('x', 23)
+      .merge(text)
+      .attr('y', function(x) {return 40 * x.id + 19})
+      .text(function(x) {return x.student});
+    
+    text.exit()
+      .transition(500)
+      .remove();
 
     // Entering and updating elements rects
+    
 
-
-    // Transition a remove for exiting elements
-
-
+    // Transition a remove for exiting element
     // Perform the same data-binding for text
-
+  }
 
     // enter elements
 
